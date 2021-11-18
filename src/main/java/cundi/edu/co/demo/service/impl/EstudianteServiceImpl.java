@@ -177,7 +177,7 @@ public class EstudianteServiceImpl implements IEstudianteService{
 	}
 
 	@Override
-	public void eliminar(int idEstudiante) throws ModelNotFoundException {
+	public void eliminar(int idEstudiante) throws ModelNotFoundException, ConflictException {
 		
 		if(validarExistenciaPorId(idEstudiante))
 			this.repo.deleteById(idEstudiante);
