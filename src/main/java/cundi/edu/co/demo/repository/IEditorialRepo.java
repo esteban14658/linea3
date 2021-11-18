@@ -6,4 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IEditorialRepo extends JpaRepository<Editorial, Integer> {
+
+    public Boolean existsByNit(String nit);
+
+    public Boolean existsByCorreo(String correo);
 }

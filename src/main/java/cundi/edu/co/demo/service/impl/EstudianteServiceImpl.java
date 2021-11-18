@@ -2,7 +2,6 @@ package cundi.edu.co.demo.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -178,7 +177,7 @@ public class EstudianteServiceImpl implements IEstudianteService{
 	}
 
 	@Override
-	public void eliminar(int idEstudiante) throws ModelNotFoundException {
+	public void eliminar(int idEstudiante) throws ModelNotFoundException, ConflictException {
 		
 		if(validarExistenciaPorId(idEstudiante))
 			this.repo.deleteById(idEstudiante);

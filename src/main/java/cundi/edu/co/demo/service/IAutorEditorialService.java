@@ -8,5 +8,7 @@ public interface IAutorEditorialService extends ICrud<AutorEditorial, AutorEdito
 
     public void eliminarNativo(Integer idAutor, Integer idEditorial) throws ModelNotFoundException;
 
+    public AutorEditorial obtenerPorIdCompuesto(Integer idAutor, Integer idEditorial) throws ModelNotFoundException;
+
     public void asociarAutorEditoial();
 }

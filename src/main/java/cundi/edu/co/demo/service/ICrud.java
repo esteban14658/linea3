@@ -19,6 +19,6 @@ public interface ICrud<T, D, ID> {
 	
 	public void editar(T t)  throws ArgumentRequiredException, ModelNotFoundException, ConflictException;
 	
-	public void eliminar(int id) throws ModelNotFoundException;
+	public void eliminar(int id) throws ModelNotFoundException, ConflictException;
 
 }

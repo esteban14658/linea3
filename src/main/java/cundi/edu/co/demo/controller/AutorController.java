@@ -68,7 +68,7 @@ public class AutorController {
 	}
 
 	@DeleteMapping(value = "/eliminar/{i}")
-	public ResponseEntity<?> eliminar(@PathVariable int i)  throws ModelNotFoundException{
+	public ResponseEntity<?> eliminar(@PathVariable int i)  throws ModelNotFoundException, ConflictException{
 		service.eliminar(i);
 		return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
 	}

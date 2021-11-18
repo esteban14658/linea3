@@ -6,6 +6,8 @@ import cundi.edu.co.demo.exception.ArgumentRequiredException;
 import cundi.edu.co.demo.exception.ConflictException;
 import cundi.edu.co.demo.exception.ModelNotFoundException;
 import cundi.edu.co.demo.repository.IAutorEditorialRepo;
+import cundi.edu.co.demo.repository.IAutorRepo;
+import cundi.edu.co.demo.repository.IEditorialRepo;
 import cundi.edu.co.demo.service.IAutorEditorialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class AutorEditorialServiceImpl implements IAutorEditorialService {
@@ -21,10 +24,47 @@ public class AutorEditorialServiceImpl implements IAutorEditorialService {
     @Autowired
     private IAutorEditorialRepo repo;
 
+    @Autowired
+    private IAutorRepo autorRepo;
+
+    @Autowired
+    private IEditorialRepo editorialRepo;
+
     @Override
     public void eliminarNativo(Integer idAutor, Integer idEditorial) throws ModelNotFoundException {
         //Validaciones pertinentes
-        this.repo.eliminarNativa(idAutor, idEditorial);
+        if (validarExistenciaPorIdAutor(idAutor) == false){
+            throw new ModelNotFoundException("El autor con el id " + idAutor +
+                    " no existe");
+        }
+        if (validarExistenciaPorIdEditorial(idEditorial) == false){
+            throw new ModelNotFoundException("La editorial con el id " + idEditorial +
+                    " no existe");
+        }
+        if (validarExistenciaIdCompuesto(idAutor, idEditorial)) {
+            this.repo.eliminarNativa(idAutor, idEditorial);
+        } else {
+            throw new ModelNotFoundException("la asignacion que desea eliminar, no existe");
+        }
+    }
+
+    @Override
+    public AutorEditorial obtenerPorIdCompuesto(Integer idAutor, Integer idEditorial) throws ModelNotFoundException {
+        if (validarExistenciaPorIdAutor(idAutor) == false){
+            throw new ModelNotFoundException("El autor con el id " + idAutor +
+                    " no existe");
+        }
+        if (validarExistenciaPorIdEditorial(idEditorial) == false){
+            throw new ModelNotFoundException("La editorial con el id " + idEditorial +
+                    " no existe");
+        }
+        if (validarExistenciaIdCompuesto(idAutor, idEditorial)) {
+            AutorEditorial autorEditorial = this.repo.obtenerPorIdCompuesto(idAutor, idEditorial);
+            autorEditorial.getAutor().setLibro(null);
+            return autorEditorial;
+        } else {
+            throw new ModelNotFoundException("la asignacion que desea obtener, no existe");
+        }
     }
 
     @Transactional
@@ -43,7 +83,11 @@ public class AutorEditorialServiceImpl implements IAutorEditorialService {
 
     @Override
     public Page<AutorEditorial> retornarPaginado(Pageable page) {
-        return null;
+        Page<AutorEditorial> resultado = repo.findAll(page);
+        for (AutorEditorial a: resultado.getContent()) {
+            a.getAutor().setLibro(null);
+        }
+        return resultado;
     }
 
     @Override
@@ -53,14 +97,22 @@ public class AutorEditorialServiceImpl implements IAutorEditorialService {
 
     @Override
     public void guardar(AutorEditorial autorEditorial) throws ConflictException, ModelNotFoundException, ArgumentRequiredException {
-        //No se puede realizar por que no tenemos la doble referencia
-        //this.repo.save(aux);
 
-        //Se podria hacer el find de autor y de editorial y asociar pero traeria  mucha informacion solo para usar dos ID's
-
-        //Agregar validaciones respectivas
-        this.repo.guardarNativo(autorEditorial.getAutor().getId(), autorEditorial.getEditorial().getId(),
-                autorEditorial.getFecha());
+        if (validarExistenciaPorIdAutor(autorEditorial.getAutor().getId()) == false){
+            throw new ModelNotFoundException("El autor con el id " + autorEditorial.getAutor().getId() +
+            " no existe");
+        }
+        if (validarExistenciaPorIdEditorial(autorEditorial.getEditorial().getId()) == false){
+            throw new ModelNotFoundException("La editorial con el id " + autorEditorial.getEditorial().getId() +
+                    " no existe");
+        }
+        if (validarExistenciaIdCompuesto(autorEditorial.getAutor().getId(),
+                autorEditorial.getEditorial().getId()) == false){
+            this.repo.guardarNativo(autorEditorial.getAutor().getId(), autorEditorial.getEditorial().getId(),
+                    LocalDate.now());
+        } else {
+            throw new ConflictException("la asignacion ya esta creada");
+        }
     }
 
     @Override
@@ -69,7 +121,19 @@ public class AutorEditorialServiceImpl implements IAutorEditorialService {
     }
 
     @Override
-    public void eliminar(int id) throws ModelNotFoundException {
+    public void eliminar(int id) throws ModelNotFoundException, ConflictException {
 
+    }
+
+    private Boolean validarExistenciaPorIdAutor(Integer idAutor) {
+        return this.autorRepo.existsById(idAutor);
+    }
+
+    private Boolean validarExistenciaPorIdEditorial(Integer idEditorial) {
+        return this.editorialRepo.existsById(idEditorial);
+    }
+
+    private Boolean validarExistenciaIdCompuesto(Integer idAutor, Integer idEditorial){
+        return this.repo.existsByIdCompuesto(idAutor, idEditorial);
     }
 }

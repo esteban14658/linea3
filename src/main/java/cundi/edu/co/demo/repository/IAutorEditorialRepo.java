@@ -26,4 +26,20 @@ public interface IAutorEditorialRepo  extends JpaRepository<AutorEditorial, Inte
     @Modifying
     @Query(value = "DELETE FROM autor_editorial where id_autor = :idAutor and id_editorial = :idEditorial ",  nativeQuery = true)
     void eliminarNativa(@Param("idAutor") Integer idAutor, @Param("idEditorial") Integer idEditorial);
+
+    @Query(value = "SELECT EXISTS(SELECT * FROM autor_editorial WHERE id_autor = :idAutor and " +
+            "id_editorial = :idEditorial)", nativeQuery = true)
+    public Boolean existsByIdCompuesto(@Param("idAutor") Integer idAutor,
+                                       @Param("idEditorial") Integer idEditorial);
+
+    @Query(value = "SELECT EXISTS(SELECT * FROM autor_editorial WHERE id_autor = :idAutor)", nativeQuery = true)
+    public Boolean existsByIdAutor(@Param("idAutor") Integer idAutor);
+
+    @Query(value = "SELECT EXISTS(SELECT * FROM autor_editorial WHERE id_editorial = :idEditorial)", nativeQuery = true)
+    public Boolean existsByIdEditorial(@Param("idEditorial") Integer idAutor);
+
+    @Query(value = "SELECT * FROM autor_editorial WHERE id_autor = :idAutor and " +
+            "id_editorial = :idEditorial", nativeQuery = true)
+    public AutorEditorial obtenerPorIdCompuesto(@Param("idAutor") Integer idAutor,
+                                       @Param("idEditorial") Integer idEditorial);
 }
