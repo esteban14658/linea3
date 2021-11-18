@@ -9,4 +9,9 @@ import cundi.edu.co.demo.entity.Usuario;
 public interface IUsuarioRepo  extends JpaRepository<Usuario, Integer> {
 
 	Usuario findOneByNick(String nick);
+	
+	boolean existsByDocumento(String nick);
+	
+	boolean existsByNickOrDocumento(String nick, String documento);
+	
 }
