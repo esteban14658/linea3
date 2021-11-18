@@ -7,18 +7,18 @@ import cundi.edu.co.demo.exception.ArgumentRequiredException;
 import cundi.edu.co.demo.exception.ConflictException;
 import cundi.edu.co.demo.exception.ModelNotFoundException;
 
-public interface ICrud<T, ID> {
+public interface ICrud<T, D, ID> {
 	
 	public Page<T> retornarPaginado(int page, int size);
 	
 	public Page<T> retornarPaginado(Pageable page);
 	
-	public T retonarPorId(ID idEstudiante) throws ModelNotFoundException;
+	public D retonarPorId(ID id) throws ModelNotFoundException;
 		
-	public void guardar(T estudiante)  throws ConflictException;
+	public void guardar(T t)  throws ConflictException, ModelNotFoundException, ArgumentRequiredException;
 	
-	public void editar(T estudiante)  throws ArgumentRequiredException, ModelNotFoundException, ConflictException;
+	public void editar(T t)  throws ArgumentRequiredException, ModelNotFoundException, ConflictException;
 	
-	public void eliminar(int idEstudiante) throws ModelNotFoundException;	
+	public void eliminar(int id) throws ModelNotFoundException;
 
 }

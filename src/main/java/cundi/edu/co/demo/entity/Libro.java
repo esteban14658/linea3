@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "libro")
@@ -37,7 +38,7 @@ public class Libro {
 	private Integer numeroPaginas;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_autor", nullable = false, foreignKey = @ForeignKey(name = "FK_Autor_Libro"))
+	@JoinColumn(name = "id_autor", nullable = true, foreignKey = @ForeignKey(name = "FK_Autor_Libro"))
 	private Autor autor;
 	
 	public Libro() {

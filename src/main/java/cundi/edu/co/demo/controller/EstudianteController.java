@@ -54,8 +54,8 @@ public class EstudianteController {
 	
 	@GetMapping(value = "/obtenerPorId/{idEstudiante}" ,produces = "application/json")
 	public ResponseEntity<?> retonarPorId(@PathVariable int idEstudiante) throws ModelNotFoundException {
-		Estudiante estudainte = service.retonarPorId(idEstudiante);
-		return new ResponseEntity<Estudiante>(estudainte, HttpStatus.OK);	
+		EstudianteDto estudianteDto = service.retonarPorId(idEstudiante);
+		return new ResponseEntity<EstudianteDto>(estudianteDto, HttpStatus.OK);
 	}		
 		
 	
@@ -71,7 +71,7 @@ public class EstudianteController {
 	}
 	
 	@PostMapping(value = "/insertar", consumes = "application/json")
-	public ResponseEntity<?> guardar(@Valid @RequestBody Estudiante estudiante) throws ConflictException {
+	public ResponseEntity<?> guardar(@Valid @RequestBody Estudiante estudiante) throws ConflictException, ModelNotFoundException, ArgumentRequiredException {
 		service.guardar(estudiante);
 		return new ResponseEntity<Object>(HttpStatus.CREATED);
 	}
@@ -100,6 +100,27 @@ public class EstudianteController {
 		header.add("info1", "valor 1");
 		header.add("info2", "valor 2");
 		return new ResponseEntity<Object>(header, HttpStatus.NO_CONTENT);
-	}	
-	
+	}
+
+	@GetMapping(value = "/obtenerPorNombreYApellido/{nombre}/{apellido}")
+	public ResponseEntity<?> obtenerPorNombreYApellido(@PathVariable String nombre, @PathVariable String apellido)
+						throws ModelNotFoundException{
+		EstudianteDto estudianteDto;
+		estudianteDto = this.service.retornarPorNombreYApellido(nombre,apellido);
+		return new ResponseEntity<EstudianteDto>(estudianteDto, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/estudiantesNativo")
+	public ResponseEntity<?> estudiantesNativo(){
+		List<EstudianteDto> listaEstudiantesDto;
+		listaEstudiantesDto = this.service.estudiantesNativo();
+		return new ResponseEntity<List<EstudianteDto>>(listaEstudiantesDto, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/estudiantesJPQL")
+	public ResponseEntity<?> estudiantesJPQL(){
+		List<EstudianteDto> listaEstudiantesDto;
+		listaEstudiantesDto = this.service.estudiantesJPQL();
+		return new ResponseEntity<List<EstudianteDto>>(listaEstudiantesDto, HttpStatus.OK);
+	}
 }

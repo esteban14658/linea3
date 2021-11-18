@@ -1,8 +1,10 @@
 package cundi.edu.co.demo.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +26,14 @@ public class EstudianteServiceImpl implements IEstudianteService{
 	
 	@Autowired
 	private IEstudianteRepo repo;
-	
+
+	private ModelMapper mapper;
+
+	public EstudianteServiceImpl(IEstudianteRepo repo, ModelMapper mapper) {
+		this.repo = repo;
+		this.mapper = mapper;
+	}
+
 	//No se usa, solo para el ejemplo
 	@Override
 	public List<Estudiante> retornarTodo() {
@@ -43,7 +52,7 @@ public class EstudianteServiceImpl implements IEstudianteService{
 	
 	
 	@Override
-	public Estudiante retonarPorId(Integer idEstudiante) throws ModelNotFoundException {
+	public EstudianteDto retonarPorId(Integer idEstudiante) throws ModelNotFoundException {
 		//return estudiante.isPresent() ? estudiante.get() : new Estudiante();
 		/*Optional<Estudiante> estudiante = repo.findById(idEstudiante);
 		if(estudiante.isPresent()) {
@@ -51,7 +60,9 @@ public class EstudianteServiceImpl implements IEstudianteService{
 		} else {
 			throw new ModelNotFoundException("Estudiante no encontrado");
 		}*/
-		return repo.findById(idEstudiante).orElseThrow(() -> new ModelNotFoundException("Estudiante no encontrado")); 
+		Estudiante estudiante = repo.findById(idEstudiante).orElseThrow(() -> new ModelNotFoundException("Estudiante no encontrado"));
+		EstudianteDto estudianteDto = mapToDTO(estudiante);
+		return estudianteDto;
 	}	
 	
 	/**
@@ -83,7 +94,39 @@ public class EstudianteServiceImpl implements IEstudianteService{
 	}
 
 	@Override
-	public void guardar(Estudiante estudiante) throws ConflictException {
+	public EstudianteDto retornarPorNombreYApellido(String nombre, String apellido) throws ModelNotFoundException {
+		Estudiante estudiante = this.repo.findByNombreAndApellido(nombre, apellido);
+		if (estudiante == null){
+			throw new ModelNotFoundException("Estudiante no encontrado");
+		}
+		EstudianteDto estudianteDto = mapToDTO(estudiante);
+		return estudianteDto;
+	}
+
+	@Override
+	public List<EstudianteDto> estudiantesNativo() {
+		List<Estudiante> listaEstudiante = this.repo.estudiantesNativo();
+		List<EstudianteDto> listaEstudianteDTO = new ArrayList<>();
+		for (Estudiante e: listaEstudiante) {
+			EstudianteDto estudianteDto = mapToDTO(e);
+			listaEstudianteDTO.add(estudianteDto);
+		}
+		return listaEstudianteDTO;
+	}
+
+	@Override
+	public List<EstudianteDto> estudiantesJPQL() {
+		List<Estudiante> listaEstudiante = this.repo.estudiantesJPQL();
+		List<EstudianteDto> listaEstudianteDTO = new ArrayList<>();
+		for (Estudiante e: listaEstudiante) {
+			EstudianteDto estudianteDto = mapToDTO(e);
+			listaEstudianteDTO.add(estudianteDto);
+		}
+		return listaEstudianteDTO;
+	}
+
+	@Override
+	public void guardar(Estudiante estudiante) throws ConflictException, ModelNotFoundException {
 		//Estudiante estu = this.repo.save(estudiante);
 		//return estu;
 		 /*Estudiante estudianteBusqueda = repo.findByCedula(estudiante.getCedula());
@@ -147,6 +190,14 @@ public class EstudianteServiceImpl implements IEstudianteService{
 		return repo.existsById(idEstudiante);
 	}
 
+	private EstudianteDto mapToDTO(Estudiante estudiante){
+		EstudianteDto estudianteDto = mapper.map(estudiante, EstudianteDto.class);
+		/*estudianteDto.setCedula(estudiante.getCedula());
+		estudianteDto.setNombre(estudiante.getNombre());
+		estudianteDto.setApellido(estudiante.getApellido());
+		estudianteDto.setCorreo(estudiante.getCorreo());*/
+		return estudianteDto;
+	}
 
 
 
