@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import cundi.edu.co.demo.entity.Autor;
@@ -18,6 +19,7 @@ import cundi.edu.co.demo.service.IAutorService;
 import javax.validation.Valid;
 import java.util.List;
 
+@PreAuthorize("hasAuthority('Administrador')")
 @RestController
 @RequestMapping("/autores")
 public class AutorController {
@@ -25,18 +27,21 @@ public class AutorController {
 	@Autowired
 	private IAutorService service;
 	
+	@PreAuthorize("hasAuthority('Administrador')  OR hasAuthority(' ') ")
 	@GetMapping(value = "/obtenerPaginado" ,produces = "application/json")
 	public ResponseEntity<?> retonarPaginado(Pageable page) {
 		Page<Autor> listaAutor = service.retornarPaginado(page);
 		return new ResponseEntity<Page<Autor>>(listaAutor, HttpStatus.OK);	
 	}
 
+	@PreAuthorize("hasAuthority('Administrador')  OR hasAuthority('Vendedor') ")
 	@GetMapping(value = "/obtenerSinListaInterna" ,produces = "application/json")
 	public ResponseEntity<?> obtenerSinListaInterna(Pageable page) {
 		Page<AutorDto> listaAutor = service.obtenerSinListaInterna(page);
 		return new ResponseEntity<Page<AutorDto>>(listaAutor, HttpStatus.OK);
 	}
 
+	@PreAuthorize("hasAuthority('Administrador')  OR hasAuthority('Vendedor') ")
 	@GetMapping(value = "/obtenerSinListaInterna2" ,produces = "application/json")
 	public ResponseEntity<?> obtenerSinListaInterna2(Pageable page) {
 		Page<AutorView> listaAutor = service.obtenerSinListaInterna2(page);

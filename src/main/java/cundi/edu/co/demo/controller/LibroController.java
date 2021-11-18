@@ -1,13 +1,10 @@
 package cundi.edu.co.demo.controller;
 
-import cundi.edu.co.demo.dto.AutorDto;
 import cundi.edu.co.demo.dto.LibroDto;
-import cundi.edu.co.demo.entity.Autor;
 import cundi.edu.co.demo.entity.Libro;
 import cundi.edu.co.demo.exception.ArgumentRequiredException;
 import cundi.edu.co.demo.exception.ConflictException;
 import cundi.edu.co.demo.exception.ModelNotFoundException;
-import cundi.edu.co.demo.service.IAutorService;
 import cundi.edu.co.demo.service.ILibroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -72,12 +72,12 @@ public class EstudianteServiceImpl implements IEstudianteService{
 	@Override
 	public EstudianteDto retornar(int i) throws ModelNotFoundException, Exception {
 		if(i <= 10) {
-			EstudianteDto est  = new EstudianteDto("Johans", "Gonzalez " + i);
+			//EstudianteDto est  = new EstudianteDto("Johans", "Gonzalez " + i);
 			throw new Exception("Ejemplo");
 			//return est;
 		} else {
 			try {
-				int x = 0;
+				//int x = 0;
 				throw new ModelNotFoundException("Estudiante no encontrado");
 			} catch(ArithmeticException e) {
 				throw new ArithmeticException("No se puede dividir por cero");

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import cundi.edu.co.demo.exception.ConflictException;
 import cundi.edu.co.demo.exception.ModelNotFoundException;
 import cundi.edu.co.demo.service.IEstudianteService;
 
+@PreAuthorize("hasAuthority('Administrador')")
 @RestController
 @RequestMapping("/estudiantes")
 public class EstudianteController {
@@ -35,25 +37,25 @@ public class EstudianteController {
 	
 	//@RequestMapping(value = "/obtener", method = RequestMethod.GET)
 	@GetMapping(value = "/obtener" ,produces = "application/json")
-	public ResponseEntity<?> retonar() {
+	public ResponseEntity<List<Estudiante>> retonar() {
 		List<Estudiante> listaEstudiante = service.retornarTodo();
 		return new ResponseEntity<List<Estudiante>>(listaEstudiante, HttpStatus.OK);	
 	}
 	
 	@GetMapping(value = "/obtenerPaginado/{page}/{size}" ,produces = "application/json")
-	public ResponseEntity<?> retonarPaginado(@PathVariable int page, @PathVariable int size) {
+	public ResponseEntity<Page<Estudiante>> retonarPaginado(@PathVariable int page, @PathVariable int size) {
 		Page<Estudiante> listaEstudiante = service.retornarPaginado(page, size);
 		return new ResponseEntity<Page<Estudiante>>(listaEstudiante, HttpStatus.OK);	
 	}	
 	
 	@GetMapping(value = "/obtenerPaginado" ,produces = "application/json")
-	public ResponseEntity<?> retonarPaginado(Pageable page) {
+	public ResponseEntity<Page<Estudiante>> retonarPaginado(Pageable page) {
 		Page<Estudiante> listaEstudiante = service.retornarPaginado(page);
 		return new ResponseEntity<Page<Estudiante>>(listaEstudiante, HttpStatus.OK);	
 	}	
 	
 	@GetMapping(value = "/obtenerPorId/{idEstudiante}" ,produces = "application/json")
-	public ResponseEntity<?> retonarPorId(@PathVariable int idEstudiante) throws ModelNotFoundException {
+	public ResponseEntity<EstudianteDto> retonarPorId(@PathVariable int idEstudiante) throws ModelNotFoundException {
 		EstudianteDto estudianteDto = service.retonarPorId(idEstudiante);
 		return new ResponseEntity<EstudianteDto>(estudianteDto, HttpStatus.OK);
 	}		
@@ -63,7 +65,7 @@ public class EstudianteController {
 	
 	//@RequestMapping(value = "/obtener", method = RequestMethod.GET)
 	@GetMapping(value = "/obtener/{i}" ,produces = "application/json")
-	public ResponseEntity<?> retonar(@PathVariable int i) throws ModelNotFoundException, Exception {
+	public ResponseEntity<EstudianteDto> retonar(@PathVariable int i) throws ModelNotFoundException, Exception {
 		EstudianteDto estudiante;
 	    estudiante = service.retornar(i);
 		return new ResponseEntity<EstudianteDto>(estudiante, HttpStatus.OK);	
@@ -71,14 +73,14 @@ public class EstudianteController {
 	}
 	
 	@PostMapping(value = "/insertar", consumes = "application/json")
-	public ResponseEntity<?> guardar(@Valid @RequestBody Estudiante estudiante) throws ConflictException, ModelNotFoundException, ArgumentRequiredException {
+	public ResponseEntity<Object> guardar(@Valid @RequestBody Estudiante estudiante) throws ConflictException, ModelNotFoundException, ArgumentRequiredException {
 		service.guardar(estudiante);
 		return new ResponseEntity<Object>(HttpStatus.CREATED);
 	}
 	
 	
 	@PutMapping(value = "/editar", consumes = "application/json")
-	public ResponseEntity<?> editar(@Valid @RequestBody Estudiante estudiante)  
+	public ResponseEntity<Object> editar(@Valid @RequestBody Estudiante estudiante)  
 				throws ArgumentRequiredException, ModelNotFoundException, ConflictException{
 		this.service.editar(estudiante);
 		return new ResponseEntity<Object>(HttpStatus.OK);
@@ -86,12 +88,9 @@ public class EstudianteController {
 	
 	//204
 	@DeleteMapping(value = "/eliminar/{i}")
-	public ResponseEntity<?> eliminar(@PathVariable int i)  throws ModelNotFoundException{
-        try {
-            this.service.eliminar(i);
-        } catch (ConflictException e) {
-			e.printStackTrace();
-		}
+
+	public ResponseEntity<Object> eliminar(@PathVariable int i)  throws ModelNotFoundException{
+		this.service.eliminar(i);
 		return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
 	}	
 	
@@ -99,7 +98,7 @@ public class EstudianteController {
 	
 	@DeleteMapping(value = "/eliminarHeader/{i}")
 	public ResponseEntity<?> eliminarConHeader(@PathVariable int i) {
-		EstudianteDto est  = new EstudianteDto("Johans", "Gonzalez " + i);
+		//EstudianteDto est  = new EstudianteDto("Johans", "Gonzalez " + i);
 		HttpHeaders header = new HttpHeaders();
 		header.add("info1", "valor 1");
 		header.add("info2", "valor 2");

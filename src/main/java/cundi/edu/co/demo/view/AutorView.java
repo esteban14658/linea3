@@ -3,16 +3,18 @@ package cundi.edu.co.demo.view;
 import org.springframework.data.annotation.Immutable;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
 @Immutable
 public class AutorView implements Serializable {
 
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     private Integer id;
 
     private String cedula;
