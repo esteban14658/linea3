@@ -13,9 +13,8 @@ public class ExceptionWrapper {
 	private String message;
 	
 	private String path;
-	
-	private ExceptionWrapper() {
-		
+
+	public ExceptionWrapper() {
 	}
 
 	public ExceptionWrapper(int status, String error, String message, String path) {

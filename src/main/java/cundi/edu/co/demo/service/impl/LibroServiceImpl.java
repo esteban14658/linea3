@@ -1,6 +1,5 @@
 package cundi.edu.co.demo.service.impl;
 
-import cundi.edu.co.demo.dto.AutorDto;
 import cundi.edu.co.demo.dto.LibroDto;
 import cundi.edu.co.demo.entity.Autor;
 import cundi.edu.co.demo.entity.Libro;

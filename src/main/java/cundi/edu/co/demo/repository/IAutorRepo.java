@@ -1,6 +1,5 @@
 package cundi.edu.co.demo.repository;
 
-import cundi.edu.co.demo.view.AutorView;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
