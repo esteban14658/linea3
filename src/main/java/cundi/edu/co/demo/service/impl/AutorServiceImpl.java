@@ -2,6 +2,7 @@ package cundi.edu.co.demo.service.impl;
 
 import cundi.edu.co.demo.dto.AutorDto;
 import cundi.edu.co.demo.entity.Libro;
+import cundi.edu.co.demo.repository.IAutorEditorialRepo;
 import cundi.edu.co.demo.repository.IAutorViewRepo;
 import cundi.edu.co.demo.view.AutorView;
 import org.modelmapper.ModelMapper;
@@ -24,6 +25,9 @@ public class AutorServiceImpl implements IAutorService {
 	
 	@Autowired
 	private IAutorRepo repo;
+
+	@Autowired
+	private IAutorEditorialRepo autorEditorialRepo;
 
 	@Autowired
 	private IAutorViewRepo viewRepo;
@@ -128,12 +132,15 @@ public class AutorServiceImpl implements IAutorService {
 	}
 
 	@Override
-	public void eliminar(int idAutor) throws ModelNotFoundException {
-		if(validarExistenciaPorId(idAutor)){
-			this.repo.deleteById(idAutor);
-		}
-		else {
-			throw new ModelNotFoundException("El autor con el id " + idAutor + " no fue encontrado");
+	public void eliminar(int idAutor) throws ModelNotFoundException, ConflictException {
+		if (validarExistenciaTablaIntermedia(idAutor) == false) {
+			if (validarExistenciaPorId(idAutor)) {
+				this.repo.deleteById(idAutor);
+			} else {
+				throw new ModelNotFoundException("El autor con el id " + idAutor + " no fue encontrado");
+			}
+		} else {
+			throw new ConflictException("No se puede eliminar por referencia en tabla intermedia");
 		}
 	}
 
@@ -144,6 +151,10 @@ public class AutorServiceImpl implements IAutorService {
 
 	private Boolean validarExistenciaPorId(int idAutor) {
 		return repo.existsById(idAutor);
+	}
+
+	private Boolean validarExistenciaTablaIntermedia(int idAutor) {
+		return autorEditorialRepo.existsByIdAutor(idAutor);
 	}
 
 	private AutorDto convertToAutorDto(final Autor autor) {

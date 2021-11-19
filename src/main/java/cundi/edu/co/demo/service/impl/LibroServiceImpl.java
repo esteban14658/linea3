@@ -68,7 +68,7 @@ public class LibroServiceImpl implements ILibroService {
     }
 
     @Override
-    public void eliminar(int idAutor) throws ModelNotFoundException {
+    public void eliminar(int idAutor) throws ModelNotFoundException, ConflictException {
 
     }
 
