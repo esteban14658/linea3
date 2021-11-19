@@ -1,7 +1,7 @@
 package cundi.edu.co.demo.exception;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +28,7 @@ public class AuthExceptionOwn implements AuthenticationEntryPoint {
 		mapException.put("message", "No estas autorizado para acceder a este recurso");
 		mapException.put("exception", "No autorizado");
 		mapException.put("path", request.getServletPath());
-		mapException.put("timestamp", LocalDateTime.now());
+		mapException.put("timestamp", new Date());
 
 		response.setContentType("application/json");
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

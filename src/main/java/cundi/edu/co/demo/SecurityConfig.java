@@ -78,7 +78,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		//Descomentar para tener seguridad
-		/*
 		http		
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -88,21 +87,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .csrf()
         .disable();
-		*/
-		
-		//Descomentar para no tener seguridad 
-		 http
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .httpBasic()
-        .realmName(securityRealm)
-        .and()
-        .csrf()
-        .disable()
-        .authorizeRequests()
-        .antMatchers("/auth/**").permitAll()
-        .anyRequest().authenticated();
 	}
 
 	//Se crea la instancia para generar los tokens mas adelantes

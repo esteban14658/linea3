@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import cundi.edu.co.demo.dto.UsuarioDto;
@@ -30,7 +31,8 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 	@Autowired
 	private IUsuarioRepo repo;
 
-
+	@Autowired
+	private BCryptPasswordEncoder bcrypt;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -86,6 +88,7 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 	@Override
 	public void guardar(Usuario obj) throws ConflictException {
 		if(!repo.existsByNickOrDocumento(obj.getNick(), obj.getDocumento())){
+			obj.setClave(bcrypt.encode(obj.getClave()));
 			repo.save(obj);
 		}else {
 			throw new ConflictException("El Usuario con el nick " + obj.getNick() + " o el documento "
@@ -127,7 +130,9 @@ public class UsuarioServiceImpl implements IUsuarioService, UserDetailsService {
 	@Override
 	public void eliminar(int obj) throws ModelNotFoundException {
 		if(!repo.existsById(obj))
-			throw new ModelNotFoundException("El usuario con el id " + " no existe");
+			throw new ModelNotFoundException("El usuario con el id " + obj + " no existe");
+		
+		repo.deleteById(obj);
 
 	}
 
