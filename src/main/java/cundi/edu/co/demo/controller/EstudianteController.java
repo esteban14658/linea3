@@ -36,7 +36,7 @@ public class EstudianteController {
 	private IEstudianteService service;
 	
 	//@RequestMapping(value = "/obtener", method = RequestMethod.GET)
-	@GetMapping(value = "/obtener" ,produces = "application/json")
+	@GetMapping(value = "/obtener" , produces = "application/json")
 	public ResponseEntity<List<Estudiante>> retonar() {
 		List<Estudiante> listaEstudiante = service.retornarTodo();
 		return new ResponseEntity<List<Estudiante>>(listaEstudiante, HttpStatus.OK);	
