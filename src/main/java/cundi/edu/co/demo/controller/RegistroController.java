@@ -45,7 +45,7 @@ public class RegistroController {
 	}
 	
 	@DeleteMapping(value = "/eliminar/{id}")
-	public ResponseEntity<Object> eliminar(@PathVariable @Min(value = 0) int id) throws ModelNotFoundException{
+	public ResponseEntity<Object> eliminar(@PathVariable @Min(value = 0) int id) throws ModelNotFoundException, ConflictException{
 		usuarioService.eliminar(id);
 		
 		return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);

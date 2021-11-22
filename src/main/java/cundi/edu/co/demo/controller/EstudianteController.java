@@ -89,7 +89,7 @@ public class EstudianteController {
 	//204
 	@DeleteMapping(value = "/eliminar/{i}")
 
-	public ResponseEntity<Object> eliminar(@PathVariable int i)  throws ModelNotFoundException{
+	public ResponseEntity<Object> eliminar(@PathVariable int i)  throws ModelNotFoundException, ConflictException{
 		this.service.eliminar(i);
 		return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
 	}	
