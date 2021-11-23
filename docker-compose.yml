@@ -5,7 +5,7 @@ services:
     image: 'primer-api:latest'
     build:
       context: .
-    container_name: app
+    container_name: app2
     depends_on:
       - db2
     environment:
