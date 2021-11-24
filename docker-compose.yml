@@ -2,14 +2,14 @@ version: '3'
 
 services:
   app:
-    image: 'linea3:latest'
+    image: 'primer-api:latest'
     build:
       context: .
     container_name: app
     depends_on:
       - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/linea3
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/primer-api
       - SPRING_DATASOURCE_USERNAME=primer-api
       - SPRING_DATASOURCE_PASSWORD=primer-api
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create
@@ -21,5 +21,5 @@ services:
     image: 'postgres:13.1-alpine'
     container_name: db
     environment:
-      - POSTGRES_USER=linea3
-      - POSTGRES_PASSWORD=linea3
+      - POSTGRES_USER=primer-api
+      - POSTGRES_PASSWORD=primer-api
