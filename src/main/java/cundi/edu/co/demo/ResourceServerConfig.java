@@ -35,7 +35,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
     @Override
     public void configure(HttpSecurity http) throws Exception {
     	//.permitAll() para quitar seguridad
-    	//.aunthenticated() para poner seguridad
+    	//.authenticated() para poner seguridad
     	
                 http
                 .exceptionHandling().authenticationEntryPoint(new AuthExceptionOwn())
@@ -43,12 +43,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
                 .requestMatchers()
                 .and()
                 .authorizeRequests()                  
-                .antMatchers("/autores/**" ).authenticated()                
+                .antMatchers("/autores/**" ).permitAll()
                 .antMatchers("/editoriales/**" ).authenticated()
-                .antMatchers("/estudiantes/**" ).permitAll()
+                .antMatchers("/estudiantes/**" ).authenticated()
                 .antMatchers("/registro/**" ).permitAll()
                 .antMatchers("/cerrarSesion/**" ).authenticated()
-                .antMatchers("/token/**" ).permitAll();                
+                .antMatchers("/token/**" ).permitAll();
     }    
 
 } 
