@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -67,6 +68,15 @@ public class ExceptionHandlerPer extends ResponseEntityExceptionHandler {
 		ExceptionWrapper ew = new ExceptionWrapper(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.toString(), 
 					"Ha ocurrido un error", request.getDescription(false));
 		return new ResponseEntity<ExceptionWrapper>(ew, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@ExceptionHandler(AccessDeniedException.class)
+	public final ResponseEntity<ExceptionWrapper> manejadorAccessDeniedException(Exception e,
+			WebRequest request){
+		e.printStackTrace();
+		ExceptionWrapper ew = new ExceptionWrapper(HttpStatus.FORBIDDEN.value(), HttpStatus.FORBIDDEN.toString(), 
+					"No cuenta con la autoridad", request.getDescription(false));
+		return new ResponseEntity<ExceptionWrapper>(ew, HttpStatus.FORBIDDEN);
 	}
 
 	@Override
