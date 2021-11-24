@@ -12,7 +12,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/primer-api
       - SPRING_DATASOURCE_USERNAME=primer-api
       - SPRING_DATASOURCE_PASSWORD=primer-api
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_JPA_SHOW_SQL=true
     ports:
       - 9000:8090
