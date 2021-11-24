@@ -27,7 +27,7 @@ import cundi.edu.co.demo.exception.ConflictException;
 import cundi.edu.co.demo.exception.ModelNotFoundException;
 import cundi.edu.co.demo.service.IEstudianteService;
 
-@PreAuthorize("hasAuthority('Vendedor')")
+//@PreAuthorize("hasAuthority('Vendedor')")
 @RestController
 @RequestMapping("/estudiantes")
 public class EstudianteController {
