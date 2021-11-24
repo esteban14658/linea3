@@ -79,7 +79,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>linea3</finalName>
+		<finalName>primer-api</finalName>
 	</build>
 
 </project>
