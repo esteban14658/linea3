@@ -1,12 +1,10 @@
 package cundi.edu.co.demo.controller;
 
-import cundi.edu.co.demo.entity.Autor;
 import cundi.edu.co.demo.entity.AutorEditorial;
 import cundi.edu.co.demo.exception.ArgumentRequiredException;
 import cundi.edu.co.demo.exception.ConflictException;
 import cundi.edu.co.demo.exception.ModelNotFoundException;
 import cundi.edu.co.demo.service.IAutorEditorialService;
-import cundi.edu.co.demo.view.AutorView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

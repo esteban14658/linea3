@@ -34,19 +34,21 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
     //Url que vamos a proteger y como
     @Override
     public void configure(HttpSecurity http) throws Exception {
+    	//.permitAll() para quitar seguridad
+    	//.aunthenticated() para poner seguridad
     	
-        http
-        .exceptionHandling().authenticationEntryPoint(new AuthExceptionOwn())
-        .and()
-        .requestMatchers()
-        .and()
-        .authorizeRequests()                  
-        .antMatchers("/autores/**" ).permitAll()
-        .antMatchers("/editoriales/**" ).permitAll()
-        .antMatchers("/estudiantes/**" ).permitAll()
-        .antMatchers("/registro/**" ).permitAll()
-        .antMatchers("/cerrarSesion/**" ).authenticated()
-        .antMatchers("/token/**" ).permitAll();
+                http
+                .exceptionHandling().authenticationEntryPoint(new AuthExceptionOwn())
+                .and()
+                .requestMatchers()
+                .and()
+                .authorizeRequests()                  
+                .antMatchers("/autores/**" ).authenticated()                
+                .antMatchers("/editoriales/**" ).authenticated()
+                .antMatchers("/estudiantes/**" ).permitAll()
+                .antMatchers("/registro/**" ).permitAll()
+                .antMatchers("/cerrarSesion/**" ).authenticated()
+                .antMatchers("/token/**" ).permitAll();                
     }    
 
 } 
